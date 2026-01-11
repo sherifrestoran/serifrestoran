@@ -478,3 +478,62 @@ body{
 }
 .contact-btn{ width: 100%; }
 }
+
+
+/* Alt iletişim barı (Telefon / Instagram / Mail) */
+.footer{
+  padding: 10px 10px 14px;
+}
+
+.contact-strip{
+  width: min(980px, 92vw);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact-action{
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px; /* yükseklik aynı kalsın */
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: .2px;
+  white-space: nowrap;
+
+  background: rgba(255, 210, 120, 0.12);
+  border: 1px solid rgba(255, 210, 120, 0.35);
+  color: rgba(255, 235, 205, 0.95);
+
+  box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.contact-action:hover{
+  transform: translateY(-1px);
+  background: rgba(255, 210, 120, 0.18);
+  border-color: rgba(255, 210, 120, 0.55);
+}
+
+.contact-action:active{
+  transform: translateY(0px);
+}
+
+@media (max-width: 520px){
+  .contact-strip{
+    gap: 10px;
+  }
+  .contact-action{
+    font-size: 13px;
+    padding: 10px 10px;
+  }
+}
