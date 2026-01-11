@@ -139,6 +139,7 @@
   function setFooter(restaurant) {
     const updated = restaurant.lastUpdated ? `Son güncelleme: ${restaurant.lastUpdated}` : "Son güncelleme: -";
     els.footerUpdated.textContent = updated;
+    if (els.footerNote) els.footerNote.textContent = restaurant.footerNote ?? "";
   }
 
   function showError(message) {

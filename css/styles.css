@@ -410,3 +410,57 @@ body{
 @media print{
   body{ background: #fff !important; color: #000 !important; }
 }
+/* ===== Footer: Afiyet Olsun + Bize Ulaşın ===== */
+.footer{
+  flex-direction: column;
+  align-items: stretch;
+}
+.footer-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: min(560px, 92vw);
+  margin: 0 auto;
+}
+.footer-note{
+  opacity: .9;
+}
+
+.contact-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .2px;
+
+  background: rgba(255, 210, 120, 0.12);
+  border: 1px solid rgba(255, 210, 120, 0.35);
+  color: rgba(255, 235, 205, 0.95);
+
+  box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.contact-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(255, 210, 120, 0.18);
+  border-color: rgba(255, 210, 120, 0.55);
+}
+.contact-btn:active{
+  transform: translateY(0px);
+}
+
+@media (max-width: 520px){
+  .footer-row{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .contact-btn{ width: 100%; }
+}
