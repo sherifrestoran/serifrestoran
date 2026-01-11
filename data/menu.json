@@ -1,11 +1,11 @@
 {
   "restaurant": {
-    "name": "ŞERİF ET PİŞİRİM",
+    "name": "ŞERİF RESTORAN",
     "tagline": "Dijital Menü",
     "currency": "₺",
-    "lastUpdated": "2026-01-11",
+    "lastUpdated": "15.01.2026",
     "logoPath": "assets/logo.webp",
-    "footerNote": "Fiyatlar bilgilendirme amaçlıdır."
+    "footerNote": "Afiyet Olsun."
   },
   "pages": [
     {
