@@ -48,8 +48,11 @@
 
     // Opsiyonel arka plan görseli (ör: "assets/items/latte.jpg")
     // JSON'da item.image (veya item.img / item.photo) alanını doldurabilirsiniz.
-    const image = item.image || item.img || item.photo || "";
-    const imgUrl = image ? encodeURI(String(image)).replaceAll("'", "%27") : "";
+    // Not: GitHub Pages'de dosya yolları büyük/küçük harfe duyarlıdır.
+    // Ayrıca JSON'da bazen yanlışlıkla başta/sonda boşluk kalabiliyor; bu da URL'yi bozup
+    // görselin görünmemesine neden olur. Bu yüzden trim() uyguluyoruz.
+    const imageRaw = String(item.image || item.img || item.photo || "").trim();
+    const imgUrl = imageRaw ? encodeURI(imageRaw).replaceAll("'", "%27") : "";
     const itemClass = imgUrl ? "menu-item has-image" : "menu-item";
     const styleAttr = imgUrl ? ` style="--item-bg: url('${esc(imgUrl)}')"` : "";
 
@@ -138,8 +141,7 @@
 
   function setFooter(restaurant) {
     const updated = restaurant.lastUpdated ? `Son güncelleme: ${restaurant.lastUpdated}` : "Son güncelleme: -";
-    if (els.footerUpdated) els.footerUpdated.textContent = updated;
-    if (els.footerNote) els.footerNote.textContent = restaurant.footerNote ?? "";
+    els.footerUpdated.textContent = updated;
   }
 
   function showError(message) {
@@ -195,28 +197,8 @@
       flippingTime: 900
     });
 
-    // MASAÜSTÜ NOTU:
-    // StPageFlip geniş ekranlarda "landscape" moda geçip iki sayfayı yan yana gösterebilir.
-    // Biz menünün her ekranda tek sayfa (portrait) görünmesini istiyoruz.
-    // Bu yüzden init sonrası (ve resize'da) portrait moda zorlarız.
-    // API: getOrientation() / updateOrientation()  (portrait | landscape)
-    function forcePortrait() {
-      try {
-        if (typeof pageFlip.getOrientation === "function" && typeof pageFlip.updateOrientation === "function") {
-          const mode = pageFlip.getOrientation();
-          if (mode !== "portrait") pageFlip.updateOrientation("portrait");
-        }
-      } catch (e) {
-        // sessiz geç: kütüphane farklı sürüm olabilir
-        console.warn("forcePortrait failed", e);
-      }
-    }
-
     // İçerik sayfaları DOM'da hazır olunca yükle
     pageFlip.loadFromHTML(els.book.querySelectorAll(".page"));
-
-    // İlk yüklemede masaüstünde iki sayfa görünmesin
-    forcePortrait();
 
     function updateIndicator() {
       const idx = pageFlip.getCurrentPageIndex();
@@ -249,22 +231,8 @@
     pageFlip.on("flip", updateIndicator);
     updateIndicator();
 
-    // Ekran döndüğünde/resize olduğunda (ve geniş ekranda) iki sayfa yan yana görünmesin
-    pageFlip.on("changeOrientation", () => {
-      forcePortrait();
-      updateIndicator();
-    });
-
-    // Pencere boyutu değişince (özellikle desktop) portrait'te kal
-    let resizeTimer = null;
-    window.addEventListener("resize", () => {
-      if (resizeTimer) window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        try { pageFlip.update(); } catch (_) {}
-        forcePortrait();
-        updateIndicator();
-      }, 120);
-    });
+    // Ekran döndüğünde/resize olduğunda indicator doğru kalsın
+    pageFlip.on("changeOrientation", updateIndicator);
 
     return pageFlip;
   }
