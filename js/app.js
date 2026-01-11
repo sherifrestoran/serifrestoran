@@ -131,17 +131,19 @@
   }
 
   function setTopBrand(restaurant) {
-    if (restaurant.name) els.brandName.textContent = restaurant.name;
-    if (restaurant.tagline) els.brandTagline.textContent = restaurant.tagline;
+    // Bazı kurulumlarda header elemanları kaldırılmış olabilir.
+    // Null kontrolü yaparak TypeError'ları engelliyoruz.
+    if (restaurant.name && els.brandName) els.brandName.textContent = restaurant.name;
+    if (restaurant.tagline && els.brandTagline) els.brandTagline.textContent = restaurant.tagline;
 
-    if (restaurant.logoPath) {
+    if (restaurant.logoPath && els.brandLogo) {
       els.brandLogo.src = restaurant.logoPath;
     }
   }
 
   function setFooter(restaurant) {
     const updated = restaurant.lastUpdated ? `Son güncelleme: ${restaurant.lastUpdated}` : "Son güncelleme: -";
-    els.footerUpdated.textContent = updated;
+    if (els.footerUpdated) els.footerUpdated.textContent = updated;
   }
 
   function showError(message) {
