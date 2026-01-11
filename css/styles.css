@@ -1,0 +1,412 @@
+/* =========================================================
+   Restoran Menü (Sayfa Çevirme) - Tema
+   ---------------------------------------------------------
+   Bu dosyayı düzenleyerek renkleri/arka planı değiştirebilirsiniz.
+   ========================================================= */
+
+:root{
+  /* Marka renkleri (logoya uyumlu) */
+  --bg1: #2b120b;
+  --bg2: #140805;
+  --accent: #d8b15a;    /* altın */
+  --accent2: #b32617;   /* kırmızı */
+  --paper: #f6f1e6;     /* sayfa kağıdı */
+  --paper2: #efe6d7;
+  --ink: #232323;
+  --muted: rgba(35,35,35,.70);
+  --line: rgba(35,35,35,.14);
+
+  --radius: 18px;
+  --shadow: 0 25px 60px rgba(0,0,0,.45);
+}
+
+/* Sayfanın genel arka planı */
+html, body {
+  height: 100%;
+  overflow: hidden;            /* Sayfanın kendisi kaymasın */
+  overscroll-behavior: none;   /* Mobilde "lastik" kayma azalt */
+}
+
+body{
+  margin: 0;
+  color: #fff;
+  /* Logo arka planıyla aynı doku */
+  background:
+    radial-gradient(1200px 700px at 20% 10%, rgba(0,0,0,.14), rgba(0,0,0,0) 55%),
+    radial-gradient(900px 700px at 85% 30%, rgba(0,0,0,.22), rgba(0,0,0,0) 55%),
+    url("../assets/bg-texture.webp") center/cover no-repeat fixed;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  display: flex;
+  flex-direction: column;
+  /* Dış sayfada pan/scroll olmasın (menü içi scroll serbest) */
+  touch-action: none;
+}
+
+/* Arka plan dokusu (CSS ile hafif desen) */
+.bg{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,.06) 0, rgba(255,255,255,0) 38%),
+    radial-gradient(circle at 90% 20%, rgba(255,255,255,.05) 0, rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 30% 90%, rgba(255,255,255,.04) 0, rgba(255,255,255,0) 45%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.020) 0, rgba(255,255,255,.020) 1px, rgba(255,255,255,0) 3px, rgba(255,255,255,0) 10px);
+  opacity: .28;
+}
+
+/* Üst bar */
+.topbar{
+  /* body kaymadığı için sticky yerine normal akış + yüksek z-index */
+  position: relative;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 14px;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(180deg, rgba(18,8,5,.88), rgba(18,8,5,.62));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-logo{
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(216,177,90,.30);
+}
+
+.brand-name{
+  font-weight: 700;
+  letter-spacing: .4px;
+  line-height: 1.1;
+}
+.brand-tagline{
+  font-size: 12px;
+  color: rgba(255,255,255,.70);
+  margin-top: 2px;
+}
+
+.controls{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn{
+  appearance: none;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  height: 40px;
+  width: 44px;
+  border-radius: 12px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.btn:active{ transform: translateY(1px); }
+.btn:disabled{
+  opacity: .40;
+  cursor: not-allowed;
+}
+
+.page-indicator{
+  min-width: 72px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,.78);
+}
+
+/* Ana alan */
+.main{
+  flex: 1;
+  min-height: 0;
+  overflow: hidden; /* Body değil, sadece menü alanı kaymalı */
+  padding: 14px 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.book-wrap{
+  width: min(980px, 100%);
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  margin-top: 6px;
+}
+
+.book{
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(var(--shadow));
+  position: relative;
+  z-index: 1;
+}
+
+/* StPageFlip default page class: .stf__item  (biz içeride .page kullanıyoruz) */
+.page{
+  width: 100%;
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* "Kağıt" hissi için iç çerçeve */
+.page-inner{
+  height: 100%;
+  padding: 22px 22px 16px;
+  background:
+    radial-gradient(900px 600px at 30% 20%, rgba(0,0,0,.05), transparent 55%),
+    radial-gradient(700px 520px at 70% 80%, rgba(0,0,0,.04), transparent 55%),
+    linear-gradient(180deg, var(--paper), var(--paper2));
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+}
+
+/* Sayfa başlığı */
+.page-head{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.page-title{
+  font-size: 22px;
+  letter-spacing: .2px;
+  margin: 0;
+}
+.page-subtitle{
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.page-meta{
+  text-align: right;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* İçerik alanı */
+.page-content{
+  overflow: auto;
+  padding-right: 6px; /* scrollbar boşluğu */
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+/* Bölümler */
+.section{
+  margin: 14px 0 0;
+}
+.section:first-child{ margin-top: 0; }
+
+.section-title{
+  margin: 0 0 8px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(35,35,35,.72);
+}
+
+/* Menü listesi */
+.menu-list{
+  display: grid;
+  gap: 10px;
+}
+
+.menu-item{
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  padding: 18px 18px;
+  min-height: 132px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+
+/* Menü öğesine arka plan görseli eklemek için:
+   data/menu.json -> item içine "image": "assets/items/latte.jpg" ekleyin.
+   (image yoksa klasik beyaz kart görünümü devam eder.) */
+.menu-item.has-image{
+  background: transparent;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.menu-item.has-image::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--item-bg);
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.menu-item.has-image::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(0,0,0,.66),
+    rgba(0,0,0,.26) 55%,
+    rgba(0,0,0,.48));
+}
+
+.menu-item.has-image .item-main,
+.menu-item.has-image .item-price{
+  position: relative;
+  z-index: 1;
+}
+
+.menu-item.has-image .item-name{
+  color: rgba(255,255,255,.96);
+}
+
+.menu-item.has-image .item-desc{
+  color: rgba(255,255,255,.80);
+}
+
+.menu-item.has-image .tag{
+  background: rgba(255,255,255,.18);
+  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.26);
+}
+
+.menu-item.has-image .item-price{
+  color: rgba(20,20,20,.95);
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(0,0,0,.10);
+  backdrop-filter: blur(6px);
+}
+
+.item-name{
+  font-weight: 650;
+  font-size: 15px;
+  line-height: 1.25;
+}
+.item-desc{
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.item-tags{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.tag{
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(200,164,106,.18);
+  color: rgba(35,35,35,.85);
+}
+
+.item-price{
+  font-weight: 800;
+  letter-spacing: .2px;
+  align-self: start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(0,0,0,.03);
+}
+
+/* Sayfa altı */
+.page-foot{
+  padding-top: 10px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.page-number{
+  font-weight: 700;
+}
+
+/* Alt açıklama */
+.hint{
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: rgba(255,255,255,.70);
+  text-align: center;
+}
+
+.noscript{
+  margin-top: 12px;
+  max-width: 720px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+/* Footer */
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 10px 12px;
+  color: rgba(255,255,255,.65);
+  font-size: 12px;
+  z-index: 10000;
+}
+.footer-link{
+  color: rgba(255,255,255,.85);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255,255,255,.35);
+}
+.footer-link:hover{ color: #fff; }
+.footer-sep{ opacity: .6; }
+.footer-small{ opacity: .85; }
+
+/* Küçük ekran iyileştirmeleri */
+@media (max-width: 520px){
+  .book-wrap{ }
+  .page-inner{ padding: 18px 16px 14px; }
+  .page-title{ font-size: 20px; }
+  .menu-item{ padding: 14px 14px; min-height: 118px; }
+}
+
+/* Yazdırma için */
+@media print{
+  body{ background: #fff !important; color: #000 !important; }
+}
