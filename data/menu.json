@@ -53,7 +53,7 @@
             {
               "name": "KARIŞIK TAVUK IZGARA (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "300",
+              "price": "250",
               "image": "assets/items/karisik_tavuk_izgara.webp"
             }
           ]
@@ -85,30 +85,30 @@
               "image": "assets/items/su.webp"
             },
             {
-              "name": "Ayran",
+              "name": "Büyük Ayran (330ml)",
               "price": "55",
-              "image": "assets/items/ayran.webp"
+              "image": "assets/items/buyuk_ayran.webp"
+            },
+ 	    {
+              "name": "Küçük Ayran (250ml)",
+              "price": "55",
+              "image": "assets/items/kucuk_ayran.webp"
             },
             {
-              "name": "Kola / Fanta / Sprite",
+              "name": "Kutu İçecek (330ml)",
               "price": "70",
-              "image": "assets/items/soda.webp"
+              "image": "assets/items/kutu_icecek.webp"
+            },
+  	    {
+              "name": "Şişe İçecek (200ml)",
+              "price": "70",
+              "image": "assets/items/sise_icecek.webp"
             }
           ]
         },
         {
           "name": "Sıcak İçecekler",
           "items": [
-            {
-              "name": "Türk Kahvesi",
-              "price": "90",
-              "image": "assets/items/turk_kahvesi.webp"
-            },
-            {
-              "name": "Filtre Kahve",
-              "price": "120",
-              "image": "assets/items/filtre_kahve.webp"
-            },
             {
               "name": "Çay",
               "price": "40",
