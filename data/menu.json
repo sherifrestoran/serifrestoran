@@ -1,0 +1,122 @@
+{
+  "restaurant": {
+    "name": "ŞERİF RESTORAN",
+    "tagline": "Dijital Menü",
+    "currency": "₺",
+    "lastUpdated": "15.01.2026",
+    "logoPath": "assets/logo.webp",
+    "footerNote": "Afiyet Olsun."
+  },
+  "pages": [
+    {
+      "id": "foods",
+      "title": "Yiyecekler",
+      "subtitle": "Dürüm • Porsiyon • Izgara",
+      "sections": [
+        {
+          "name": "Dürümler",
+          "items": [
+            {
+              "name": "TAVUK ŞİŞ DÜRÜM (80 Gr.)",
+              "description": "",
+              "price": "100",
+              "image": "assets/items/tavuk_durum.webp"
+            },
+            {
+              "name": "ADANA KEBAP DÜRÜM (80 Gr.)",
+              "description": "",
+              "price": "150",
+              "image": "assets/items/adana_durum.webp?v=2"
+            }
+          ]
+        },
+        {
+          "name": "Porsiyonlar",
+          "items": [
+            {
+              "name": "TAVUK ŞİŞ PORSİYON (120 Gr.)",
+              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
+              "price": "180",
+              "image": "assets/items/tavuk_porsiyon.webp"
+            },
+            {
+              "name": "ADANA KEBAP PORSİYON (120 Gr.)",
+              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
+              "price": "250",
+              "image": "assets/items/adana_porsiyon.webp"
+            }
+          ]
+        },
+        {
+          "name": "Izgaralar",
+          "items": [
+            {
+              "name": "KARIŞIK TAVUK IZGARA (1 Kg.)",
+              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
+              "price": "300",
+              "image": "assets/items/karisik_tavuk_izgara.webp"
+            }
+          ]
+        },
+        {
+          "name": "Pişirim",
+          "items": [
+            {
+              "name": "1 KG ET PİŞİRİM",
+              "description": "Sadece pişirim ücreti.",
+              "price": "50",
+              "image": "assets/items/et_pisirim.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "İçecekler",
+      "subtitle": "Sıcak & Soğuk",
+      "sections": [
+        {
+          "name": "Soğuk İçecekler",
+          "items": [
+            {
+              "name": "Su (0.5L)",
+              "price": "35",
+              "image": "assets/items/su.webp"
+            },
+            {
+              "name": "Ayran",
+              "price": "55",
+              "image": "assets/items/ayran.webp"
+            },
+            {
+              "name": "Kola / Fanta / Sprite",
+              "price": "70",
+              "image": "assets/items/soda.webp"
+            }
+          ]
+        },
+        {
+          "name": "Sıcak İçecekler",
+          "items": [
+            {
+              "name": "Türk Kahvesi",
+              "price": "90",
+              "image": "assets/items/turk_kahvesi.webp"
+            },
+            {
+              "name": "Filtre Kahve",
+              "price": "120",
+              "image": "assets/items/filtre_kahve.webp"
+            },
+            {
+              "name": "Çay",
+              "price": "40",
+              "image": "assets/items/cay.webp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
