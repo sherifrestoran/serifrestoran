@@ -21,18 +21,27 @@
 
   // Menü alanının yüksekliğine göre PageFlip sayfa yüksekliğini dinamik hesapla
   // Amaç: Genişliği bozmadan, sayfanın yüksekliği kategori barından footer'a kadar alanı doldursun.
-  function calcFlipHeight() {
+  
+  // Masaüstü modu: geniş ekranlar ve/veya masaüstü istek (bazı mobil tarayıcılarda 'Masaüstü sitesi')
+  function isDesktopMode() {
+    const mq = window.matchMedia ? window.matchMedia("(min-width: 1100px)") : null;
+    // iOS "Masaüstü Sitesi" genelde Macintosh UA kullanabilir
+    const ua = navigator.userAgent || "";
+    const looksDesktopUA = /Macintosh|Windows NT|X11|Linux/.test(ua) && !/Android/.test(ua);
+    return (mq && mq.matches) || (looksDesktopUA && (window.innerWidth >= 980));
+  }
+
+function calcFlipHeight(pagesPerViewOverride, basePageWidthOverride) {
     const wrap = document.querySelector(".book-wrap");
     if (!wrap) return 640;
 
     const cw = wrap.clientWidth || 420;
     const ch = wrap.clientHeight || 640;
 
-    // usePortrait açık olduğu için dar ekranlarda tek sayfa, geniş ekranlarda çift sayfa varsayımı
-    const pagesPerView = cw < 720 ? 1 : 2;
-    const baseW = 420;
+    // Yükseklik hesabı: görüntülenen sayfa adedine göre ölçekle
+    const pagesPerView = (typeof pagesPerViewOverride === "number") ? pagesPerViewOverride : (cw < 720 ? 1 : 2);
+    const baseW = (typeof basePageWidthOverride === "number") ? basePageWidthOverride : 420;
     const spreadW = baseW * pagesPerView;
-
     const scaleW = cw / spreadW;
     const safeScaleW = Math.max(scaleW, 0.05);
 
@@ -211,7 +220,21 @@
     }
 
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
-    const pageFlip = new window.St.PageFlip(els.book, {
+    const desktopMode = isDesktopMode();
+    // Masaüstünde tek sayfa (portrait) ve daha geniş çalışma alanı
+    // Mobil davranışı kesinlikle bozulmamalı: ayarlar sadece desktopMode=true iken değişir.
+    const DESKTOP_PAGE_W = 420 * 3; // tek sayfayı ~3 sayfa genişliği yap
+    const settings = desktopMode ? {
+      width: DESKTOP_PAGE_W,
+      height: calcFlipHeight(1, DESKTOP_PAGE_W),
+      size: "fixed",
+      maxShadowOpacity: 0.35,
+      showCover: false,
+      mobileScrollSupport: false,
+      useMouseEvents: false,
+      usePortrait: true,
+      flippingTime: 900
+    } : {
       width: 420,
       height: calcFlipHeight(),
       size: "stretch",
@@ -225,13 +248,25 @@
       useMouseEvents: false,
       usePortrait: true,
       flippingTime: 900
-    });
+    };
+
+    // Not: width/height base ölçülerdir.
+    const pageFlip = new window.St.PageFlip(els.book, settings);
 
     // İçerik sayfaları DOM'da hazır olunca yükle
     pageFlip.loadFromHTML(els.book.querySelectorAll(".page"));
 
+    // Masaüstünde her zaman tek sayfa göster (portrait) — iki sayfa (landscape) moduna geçmesini engelle
+    if (desktopMode && typeof pageFlip.updateOrientation === "function") {
+      try { pageFlip.updateOrientation("portrait"); } catch (_) {}
+      pageFlip.on && pageFlip.on("changeOrientation", () => {
+        try { pageFlip.updateOrientation("portrait"); } catch (_) {}
+      });
+    }
 
-    function updateIndicator() {
+    // CSS'e mod sınıfı
+    document.documentElement.classList.toggle("is-desktop", !!desktopMode);
+function updateIndicator() {
       const idx = pageFlip.getCurrentPageIndex();
       els.indicator.textContent = (idx + 1) + " / " + pageCount;
 
