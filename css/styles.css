@@ -202,7 +202,8 @@ body{
   overflow: hidden; /* Body değil, sadece menü alanı kaymalı */
   /* Menü (kitap) üstteki kategori barına kadar uzasın.
      Genişlik aynı kalsın; yalnızca üst boşluğu kaldırıyoruz. */
-  padding: 0 12px 0;
+  /* Kategori sekmeleri ile menü (kitap) aynı hizadan başlasın */
+  padding: 0 14px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -210,16 +211,16 @@ body{
 }
 
 .book-wrap{
-  width: min(980px, 100%);
+  /* Menü biraz daha geniş olsun, ama aynı hizadan başlasın */
+  width: min(1040px, 100%);
   flex: 1;
   min-height: 0;
   display: grid;
   place-items: center;
   /* Kategori barı ile menü arasında boşluk olmasın */
   margin-top: 0;
-  /* Sekme başlangıcı ile menü başlangıcını hizalamak için küçük kaydırma
-     (JS, --bookShift CSS değişkenini ayarlar). */
-  transform: translateX(var(--bookShift, 0px));
+  /* JS ile kaydırma yok: hizalama yapısal olarak CSS ile */
+  transform: none;
 }
 
 .book{
@@ -567,7 +568,7 @@ body{
 }
 
 .contact-strip{
-  width: min(980px, 92vw);
+  width: min(1040px, 92vw);
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -624,15 +625,23 @@ body{
 .category-tabs{
   position: relative;
   z-index: 999998;
-  display: flex;
-  gap: 10px;
-  padding: 10px 14px 12px;
+  /* arka plan full-width, iç hizalama .category-tabs-inner ile */
+  padding: 10px 0 12px;
   background: linear-gradient(180deg, rgba(18,8,5,.62), rgba(18,8,5,.35));
   border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.category-tabs-inner{
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 0 14px;
+  display: flex;
+  gap: 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-.category-tabs::-webkit-scrollbar{ height: 0; }
+
+.category-tabs-inner::-webkit-scrollbar{ height: 0; }
 
 .category-tab{
   appearance: none;

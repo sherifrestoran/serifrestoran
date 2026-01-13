@@ -43,26 +43,8 @@
     return h;
   }
 
-  // Kategori sekmesinin (örn. "Yiyecekler") başladığı x koordinatı ile
-  // PageFlip sayfasının başladığı x koordinatını aynı hizaya getir.
-  // PageFlip bazı ekranlarda sayfayı container içinde ortalayıp inline "left" verebiliyor.
-  // Biz sadece aradaki fark kadar .book-wrap'ı kaydırıyoruz.
-  // ÖNEMLİ: Bu hesaplama flip (sayfa değişimi) sırasında yapılmaz; sadece ilk yükleme ve resize'da.
-  function alignBookToCategory() {
-    const wrap = document.querySelector('.book-wrap');
-    const tab = document.querySelector('.category-tab');
-    const pageEl = document.querySelector('#book .stf__item');
-    if (!wrap || !tab || !pageEl) return;
-
-    const tabLeft = tab.getBoundingClientRect().left;
-    const pageLeft = pageEl.getBoundingClientRect().left;
-    if (!Number.isFinite(tabLeft) || !Number.isFinite(pageLeft)) return;
-
-    // Fark çok büyükse (layout henüz oturmadıysa) uygulama.
-    const diff = Math.round(tabLeft - pageLeft);
-    const clamped = Math.max(-40, Math.min(40, diff));
-    document.documentElement.style.setProperty('--bookShift', clamped + 'px');
-  }
+  // Menü ve kategori sekmeleri hizalaması CSS tarafında ortak padding/width ile yapılır.
+  // Bu yüzden JS ile kaydırma/hesaplama yapılmaz (kategori değişince oynama olmasın).
 
 
   /** Basit HTML escape */
@@ -248,8 +230,6 @@
     // İçerik sayfaları DOM'da hazır olunca yükle
     pageFlip.loadFromHTML(els.book.querySelectorAll(".page"));
 
-    // İlk render sonrası hizalamayı uygula (sayfa elemanları oluşsun diye küçük gecikme)
-    setTimeout(alignBookToCategory, 0);
 
     function updateIndicator() {
       const idx = pageFlip.getCurrentPageIndex();
@@ -285,8 +265,7 @@
     // Ekran döndüğünde/resize olduğunda indicator doğru kalsın
     pageFlip.on("changeOrientation", updateIndicator);
 
-    // Orientation değişince hizalamayı tekrar uygula
-    pageFlip.on("changeOrientation", () => setTimeout(alignBookToCategory, 0));
+    // Orientation değişince indicator güncellenir; hizalama CSS ile sabittir.
 
     return pageFlip;
   }
@@ -520,15 +499,7 @@ async function main() {
       const pageFlip = initPageFlip(pages.length);
       setupCategoryTabs(pages, pageFlip);
 
-      // Kategori sekmeleri oluşturulduktan sonra hizalamayı uygula
-      setTimeout(alignBookToCategory, 0);
-
-      // Ekran boyutu değişince hizalamayı tekrar uygula (debounce)
-      let _alignT = null;
-      window.addEventListener('resize', () => {
-        clearTimeout(_alignT);
-        _alignT = setTimeout(alignBookToCategory, 120);
-      }, { passive: true });
+      // Hizalama CSS ile; resize'da JS kaydırması yok.
 
       protectScrollAreas();
       preventBodyScroll();
