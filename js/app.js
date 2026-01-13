@@ -212,13 +212,13 @@
 
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
     const pageFlip = new window.St.PageFlip(els.book, {
-      width: baseWidth,
-      height: baseHeight,
+      width: 420,
+      height: calcFlipHeight(),
       size: "stretch",
-      minWidth: minW,
-      maxWidth: maxW,
+      minWidth: 280,
+      maxWidth: 980,
       minHeight: 420,
-      maxHeight: maxH,
+      maxHeight: 1100,
       maxShadowOpacity: 0.35,
       showCover: false,
       mobileScrollSupport: false,
@@ -227,7 +227,7 @@
       flippingTime: 900
     });
 
-// İçerik sayfaları DOM'da hazır olunca yükle
+    // İçerik sayfaları DOM'da hazır olunca yükle
     pageFlip.loadFromHTML(els.book.querySelectorAll(".page"));
 
 
