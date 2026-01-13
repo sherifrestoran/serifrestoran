@@ -200,7 +200,8 @@ body{
   flex: 1;
   min-height: 0;
   overflow: hidden; /* Body değil, sadece menü alanı kaymalı */
-  padding: 14px 12px 0;
+  /* Menü (sayfa) alanını üst kategori barından footer'a kadar uzat */
+  padding: 8px 12px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,7 +214,7 @@ body{
   min-height: 0;
   display: grid;
   place-items: center;
-  margin-top: 6px;
+  margin-top: 0;
 }
 
 .book{

@@ -17,7 +17,6 @@
     nextBtn: document.getElementById("nextBtn"),
     indicator: document.getElementById("pageIndicator"),
     footerUpdated: document.getElementById("footerUpdated"),
-    hint: document.getElementById("hint"),
   };
 
   /** Basit HTML escape */
@@ -185,13 +184,14 @@
 
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
     const pageFlip = new window.St.PageFlip(els.book, {
+      // Daha uzun sayfa oranı: menü alanı üst kategori barından footer'a kadar daha iyi dolar.
       width: 420,
-      height: 640,
+      height: 740,
       size: "stretch",
       minWidth: 280,
       maxWidth: 980,
-      minHeight: 420,
-      maxHeight: 1100,
+      minHeight: 520,
+      maxHeight: 1400,
       maxShadowOpacity: 0.35,
       showCover: false,
       mobileScrollSupport: false,
@@ -473,10 +473,7 @@ async function main() {
       enablePullToRefresh();
 
 
-      // İpucu: sayfa çoksa, metni kısalt (görsel kalabalık olmasın)
-      if (pages.length > 8) {
-        els.hint.textContent = "İpucu: Sayfayı çevirmek için üstteki okları kullanın.";
-      }
+      // (İpucu metni kaldırıldı)
     } catch (err) {
       showError(err?.message || "Beklenmeyen bir hata oluştu.");
     }
