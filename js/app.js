@@ -17,8 +17,32 @@
     nextBtn: document.getElementById("nextBtn"),
     indicator: document.getElementById("pageIndicator"),
     footerUpdated: document.getElementById("footerUpdated"),
-    hint: document.getElementById("hint"),
-  };
+};
+
+  // Menü alanının yüksekliğine göre PageFlip sayfa yüksekliğini dinamik hesapla
+  // Amaç: Genişliği bozmadan, sayfanın yüksekliği kategori barından footer'a kadar alanı doldursun.
+  function calcFlipHeight() {
+    const wrap = document.querySelector(".book-wrap");
+    if (!wrap) return 640;
+
+    const cw = wrap.clientWidth || 420;
+    const ch = wrap.clientHeight || 640;
+
+    // usePortrait açık olduğu için dar ekranlarda tek sayfa, geniş ekranlarda çift sayfa varsayımı
+    const pagesPerView = cw < 720 ? 1 : 2;
+    const baseW = 420;
+    const spreadW = baseW * pagesPerView;
+
+    const scaleW = cw / spreadW;
+    const safeScaleW = Math.max(scaleW, 0.05);
+
+    let h = Math.round(ch / safeScaleW);
+
+    // Mantıklı sınırlar
+    h = Math.max(520, Math.min(h, 1400));
+    return h;
+  }
+
 
   /** Basit HTML escape */
   function esc(str) {
@@ -186,7 +210,7 @@
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
     const pageFlip = new window.St.PageFlip(els.book, {
       width: 420,
-      height: 640,
+      height: calcFlipHeight(),
       size: "stretch",
       minWidth: 280,
       maxWidth: 980,
@@ -474,10 +498,7 @@ async function main() {
 
 
       // İpucu: sayfa çoksa, metni kısalt (görsel kalabalık olmasın)
-      if (pages.length > 8) {
-        els.hint.textContent = "İpucu: Sayfayı çevirmek için üstteki okları kullanın.";
-      }
-    } catch (err) {
+} catch (err) {
       showError(err?.message || "Beklenmeyen bir hata oluştu.");
     }
   }
