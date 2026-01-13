@@ -769,3 +769,17 @@ a:focus, a:focus-visible,
 @media (prefers-reduced-motion: reduce){
   .confirm-btn{ transition: none; }
 }
+
+
+/* ================= Desktop layout tweaks (does not affect mobile) ================= */
+@media (min-width: 1100px){
+  /* One wide page (≈ 3 mobile pages) centered */
+  .book-wrap{max-width: 1260px;}
+  #book{max-width: 1260px;}
+
+  /* 3 items per row inside each section */
+  .menu-list{grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px;}
+
+  /* Slightly tighter headings for wide layout */
+  .section-title{margin-top: 16px;}
+}
