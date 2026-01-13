@@ -211,21 +211,28 @@
     }
 
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
+    const isDesktop = window.matchMedia("(min-width: 1100px)").matches;
+    // Mobilde mevcut görünüm korunur. Masaüstünde tek sayfa ama 3 sayfa genişliğinde "panoramik" görünüm.
+    const basePageWidth = 420;
+    const pageWidth = isDesktop ? basePageWidth * 3 : basePageWidth;
+
     const pageFlip = new window.St.PageFlip(els.book, {
-      width: 420,
+      width: pageWidth,
       height: calcFlipHeight(),
       size: "stretch",
-      minWidth: 280,
-      maxWidth: 980,
+      minWidth: isDesktop ? 900 : 280,
+      maxWidth: isDesktop ? 1400 : 980,
       minHeight: 420,
       maxHeight: 1100,
       maxShadowOpacity: 0.35,
       showCover: false,
       mobileScrollSupport: false,
       useMouseEvents: false,
+      // Her zaman tek sayfa (spread yok) — masaüstünde de.
       usePortrait: true,
       flippingTime: 900
     });
+
 
     // İçerik sayfaları DOM'da hazır olunca yükle
     pageFlip.loadFromHTML(els.book.querySelectorAll(".page"));
