@@ -18,6 +18,7 @@
     indicator: document.getElementById("pageIndicator"),
     footerUpdated: document.getElementById("footerUpdated"),
     hint: document.getElementById("hint"),
+    categoryTabs: document.getElementById("categoryTabs"),
   };
 
   /** Basit HTML escape */
@@ -54,9 +55,7 @@
     const imageRaw = String(item.image || item.img || item.photo || "").trim();
     const imgUrl = imageRaw ? encodeURI(imageRaw).replaceAll("'", "%27") : "";
     const itemClass = imgUrl ? "menu-item has-image" : "menu-item";
-    const imgTag = imgUrl
-      ? `<img class="item-bg" src="${esc(imgUrl)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.style.display='none';">`
-      : "";
+    const styleAttr = imgUrl ? ` style="--item-bg: url('${esc(imgUrl)}')"` : "";
 
     const tagsHTML = tags.length
       ? `<div class="item-tags">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>`
@@ -65,8 +64,7 @@
     const descHTML = desc ? `<div class="item-desc">${desc}</div>` : "";
 
     return `
-      <div class="${itemClass}">
-        ${imgTag}
+      <div class="${itemClass}"${styleAttr}>
         <div class="item-main">
           <div class="item-name">${name}</div>
           ${descHTML}
@@ -144,7 +142,41 @@
 
   function setFooter(restaurant) {
     const updated = restaurant.lastUpdated ? `Son güncelleme: ${restaurant.lastUpdated}` : "Son güncelleme: -";
-    if (els.footerUpdated) els.footerUpdated.textContent = updated;
+    els.footerUpdated.textContent = updated;
+  }
+
+
+  // Header altında kategori sekmeleri: sayfalar arasında tek tıkla geçiş
+  // Gelecekte data/menu.json içine yeni sayfa eklersen otomatik buton oluşur.
+  function setupCategoryTabs(pages, pageFlip) {
+    const host = els.categoryTabs;
+    if (!host || !pageFlip) return;
+
+    host.innerHTML = "";
+    const buttons = [];
+
+    pages.forEach((p, i) => {
+      const label = String(p.navTitle || p.category || p.title || ("Sayfa " + (i + 1))).trim();
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "cat-btn";
+      btn.textContent = label;
+      btn.addEventListener("click", () => {
+        const current = pageFlip.getCurrentPageIndex();
+        if (current !== i) pageFlip.flip(i, "top");
+      });
+      host.appendChild(btn);
+      buttons.push(btn);
+    });
+
+    const setActive = (idx) => {
+      buttons.forEach((b, j) => b.classList.toggle("is-active", j === idx));
+    };
+
+    // İlk aktif
+    setActive(pageFlip.getCurrentPageIndex());
+    // Sayfa çevrilince güncelle
+    pageFlip.on("flip", () => setActive(pageFlip.getCurrentPageIndex()));
   }
 
   function showError(message) {
@@ -284,116 +316,7 @@
     );
   }
 
-  
-
-  // Mobilde "aşağı çek-yenile" (pull to refresh) benzeri davranış:
-  // - Sayfanın kendisi kaymasın diye body overflow kapalı
-  // - Kullanıcı üstten aşağı doğru çekerse (ve menü listesi en üstteyse) sayfayı yeniler
-  function enablePullToRefresh() {
-    const ptr = document.getElementById("ptr");
-    const ptrText = document.getElementById("ptrText");
-
-    const THRESHOLD = 78; // px
-    const START_ZONE = 120; // px (ekranın üst kısmı)
-
-    let startY = 0;
-    let triggered = false;
-    let ready = false;
-    let activeScroller = null;
-
-    function setPtrState(state) {
-      if (!ptr) return;
-      ptr.classList.remove("show", "ready", "loading");
-      if (state === "show") ptr.classList.add("show");
-      if (state === "ready") ptr.classList.add("show", "ready");
-      if (state === "loading") ptr.classList.add("show", "loading");
-    }
-
-    function setPtrText(text) {
-      if (ptrText) ptrText.textContent = text;
-    }
-
-    document.addEventListener("touchstart", (e) => {
-      const t = e.touches && e.touches[0];
-      if (!t) return;
-
-      activeScroller = e.target && e.target.closest ? e.target.closest(".page-content") : null;
-
-      // Dokunuş menü içinde ve scrollTop>0 ise kullanıcı menüyü kaydırıyordur; pull-to-refresh başlatma.
-      if (activeScroller && activeScroller.scrollTop > 0) {
-        startY = 0;
-        triggered = false;
-        ready = false;
-        setPtrState("hide");
-        return;
-      }
-
-      // Sadece sayfanın tepesine yakın başlarsa (kazara tetiklemeyi azaltır)
-      if (t.clientY < START_ZONE) {
-        startY = t.clientY;
-        triggered = false;
-        ready = false;
-        setPtrText("Yenilemek için aşağı çek");
-        setPtrState("hide");
-      } else {
-        startY = 0;
-        triggered = false;
-        ready = false;
-        setPtrState("hide");
-      }
-    }, { passive: true, capture: true });
-
-    document.addEventListener("touchmove", (e) => {
-      if (!startY || triggered) return;
-      const t = e.touches && e.touches[0];
-      if (!t) return;
-
-      const dy = t.clientY - startY;
-      if (dy <= 12) {
-        setPtrState("hide");
-        return;
-      }
-
-      // Pull hareketi sırasında sayfanın (body) "lastik" kaymasını engelle
-      // (menü içindeyse ve en üstteyse de engeller, böylece sadece ikon görünür)
-      if (activeScroller && activeScroller.scrollTop === 0) {
-        try { e.preventDefault(); } catch (_) {}
-      }
-
-      // Menünün içinde ve scrollTop>0 ise asla tetikleme
-      const scroller = e.target && e.target.closest ? e.target.closest(".page-content") : null;
-      if (scroller && scroller.scrollTop > 0) return;
-
-      if (dy >= THRESHOLD) {
-        ready = true;
-        setPtrText("Bırakınca yenilenecek");
-        setPtrState("ready");
-      } else {
-        ready = false;
-        setPtrText("Yenilemek için aşağı çek");
-        setPtrState("show");
-      }
-    }, { passive: false, capture: true });
-
-    document.addEventListener("touchend", () => {
-      if (startY && ready && !triggered) {
-        triggered = true;
-        setPtrText("Yenileniyor…");
-        setPtrState("loading");
-        setTimeout(() => location.reload(), 120);
-      } else {
-        setPtrState("hide");
-      }
-
-      // Reset
-      startY = 0;
-      triggered = false;
-      ready = false;
-      activeScroller = null;
-    }, { passive: true, capture: true });
-  }
-
-async function main() {
+  async function main() {
     try {
       const data = await loadMenu();
       const restaurant = data.restaurant || {};
@@ -414,11 +337,10 @@ async function main() {
         els.book.appendChild(pageEl);
       });
 
-      initPageFlip(pages.length);
+      const pageFlip = initPageFlip(pages.length);
+      setupCategoryTabs(pages, pageFlip);
       protectScrollAreas();
       preventBodyScroll();
-      enablePullToRefresh();
-
 
       // İpucu: sayfa çoksa, metni kısalt (görsel kalabalık olmasın)
       if (pages.length > 8) {
