@@ -89,7 +89,7 @@
               "price": "55",
               "image": "assets/items/buyuk_ayran.webp"
             },
- 	    {
+            {
               "name": "Küçük Ayran (250ml)",
               "price": "55",
               "image": "assets/items/kucuk_ayran.webp"
@@ -99,7 +99,7 @@
               "price": "70",
               "image": "assets/items/kutu_icecek.webp"
             },
-  	    {
+            {
               "name": "Şişe İçecek (200ml)",
               "price": "70",
               "image": "assets/items/sise_icecek.webp"
@@ -113,6 +113,42 @@
               "name": "Çay",
               "price": "40",
               "image": "assets/items/cay.webp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soon",
+      "title": "Çok Yakında",
+      "subtitle": "",
+      "sections": [
+        {
+          "name": "Çok Yakında",
+          "items": [
+            {
+              "name": "Çok Yakında",
+              "description": "",
+              "price": "0",
+              "image": "assets/items/masa.webp"
+            },
+            {
+              "name": "Çok Yakında",
+              "description": "",
+              "price": "0",
+              "image": "assets/items/masa.webp"
+            },
+            {
+              "name": "Çok Yakında",
+              "description": "",
+              "price": "0",
+              "image": "assets/items/masa.webp"
+            },
+            {
+              "name": "Çok Yakında",
+              "description": "",
+              "price": "0",
+              "image": "assets/items/masa.webp"
             }
           ]
         }
