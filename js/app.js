@@ -475,6 +475,83 @@ function protectScrollAreas() {
     }, { passive: true, capture: true });
   }
 
+
+  // İletişim butonlarında (Telefon/Instagram/Adres/Mail) onay kutusu
+  function setupContactConfirm() {
+    const overlay = document.getElementById("confirmOverlay");
+    const msgEl = document.getElementById("confirmMessage");
+    const btnNo = document.getElementById("confirmNo");
+    const btnYes = document.getElementById("confirmYes");
+    if (!overlay || !msgEl || !btnNo || !btnYes) return;
+
+    const getMessageForHref = (href) => {
+      if (!href) return "Devam etmek ister misin?";
+      const h = href.toLowerCase();
+      if (h.startsWith("tel:")) return "Bir kebap mesafesindeyiz 😋 Aramak ister misin?";
+      if (h.includes("instagram.com")) return "Izgaradan taze kareler var 📸🔥 Instagram’a göz atalım mı?";
+      if (h.includes("google.com/maps") || h.includes("maps.google") || h.includes("/maps")) return "Kebabın yolu buradan geçiyor 🗺️🔥Yol tarifini açalım mı?";
+      if (h.startsWith("mailto:")) return "Bir mesaj bırakmak ister misin? Okuruz, cevaplarız 😉";
+      return "Devam etmek ister misin?";
+    };
+
+    let pendingAction = null;
+
+    const open = (message, actionFn) => {
+      msgEl.textContent = message || "Devam etmek ister misin?";
+      pendingAction = typeof actionFn === "function" ? actionFn : null;
+      overlay.hidden = false;
+      // iOS'ta bazen ilk tıkta odak çerçevesi çıkabiliyor; kısa süre sonra odakla
+      setTimeout(() => { try { btnNo.focus({ preventScroll: true }); } catch(_) {} }, 0);
+    };
+
+    const close = () => {
+      overlay.hidden = true;
+      pendingAction = null;
+    };
+
+    btnNo.addEventListener("click", () => close());
+    btnYes.addEventListener("click", () => {
+      const fn = pendingAction;
+      close();
+      // kapandıktan sonra yönlendir (mobilde daha stabil)
+      if (fn) setTimeout(fn, 30);
+    });
+
+    // Arka plana tıklayınca kapat
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) close();
+    });
+
+    // ESC ile kapat
+    window.addEventListener("keydown", (e) => {
+      if (!overlay.hidden && (e.key === "Escape" || e.key === "Esc")) close();
+    });
+
+    // Footer iletişim linklerini yakala
+    document.querySelectorAll(".contact-action").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        const href = a.getAttribute("href") || "";
+        const target = a.getAttribute("target") || "";
+        const rel = a.getAttribute("rel") || "";
+
+        // Bazı butonlar zaten noopener/blank olabilir; biz onaydan sonra aynı şekilde açacağız.
+        e.preventDefault();
+        e.stopPropagation();
+
+        const message = getMessageForHref(href);
+
+        open(message, () => {
+          if (target === "_blank") {
+            // noopener güvenliği
+            window.open(href, "_blank", rel.includes("noopener") ? "noopener" : "noopener");
+          } else {
+            window.location.href = href;
+          }
+        });
+      }, { passive: false });
+    });
+  }
+
 async function main() {
     try {
       const data = await loadMenu();
@@ -504,6 +581,8 @@ async function main() {
       protectScrollAreas();
       preventBodyScroll();
       enablePullToRefresh();
+      setupContactConfirm();
+
 
 
       // İpucu: sayfa çoksa, metni kısalt (görsel kalabalık olmasın)

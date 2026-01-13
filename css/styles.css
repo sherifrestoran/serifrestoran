@@ -682,3 +682,82 @@ a:focus, a:focus-visible,
   color: rgba(255,255,255,.98);
   box-shadow: 0 6px 18px rgba(0,0,0,.22);
 }
+
+
+/* =========================================================
+   Onay/Bilgilendirme Kutusu (İletişim butonları)
+   ========================================================= */
+.confirm-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 1000003;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.confirm-overlay[hidden]{ display:none; }
+
+.confirm-dialog{
+  width: min(440px, calc(100vw - 36px));
+  border-radius: 18px;
+  background: linear-gradient(180deg, var(--paper), var(--paper2));
+  border: 1px solid rgba(0,0,0,.10);
+  box-shadow: var(--shadow);
+  padding: 16px 16px 14px;
+}
+
+.confirm-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.confirm-message{
+  color: rgba(35,35,35,.80);
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 14px;
+}
+
+.confirm-actions{
+  display: flex;
+  gap: 12px;
+}
+
+.confirm-btn{
+  flex: 1;
+  border: 1px solid rgba(0,0,0,.14);
+  border-radius: 14px;
+  padding: 11px 14px;
+  font-weight: 900;
+  cursor: pointer;
+  background: rgba(0,0,0,.06);
+  color: rgba(35,35,35,.92);
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, filter .12s ease;
+}
+.confirm-btn:hover{ filter: brightness(1.02); }
+.confirm-btn:active{ transform: scale(.98); }
+
+.confirm-yes{
+  background: rgba(179,38,23,.10);
+  border-color: rgba(179,38,23,.28);
+  color: rgba(35,35,35,.95);
+}
+.confirm-yes:hover{
+  background: rgba(179,38,23,.14);
+  border-color: rgba(179,38,23,.40);
+}
+
+.confirm-no{
+  background: rgba(0,0,0,.05);
+  border-color: rgba(0,0,0,.14);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .confirm-btn{ transition: none; }
+}
