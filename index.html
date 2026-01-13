@@ -17,6 +17,17 @@
 <body>
   <div class="bg" aria-hidden="true"></div>
 
+  <!-- Mobilde "aşağı çek-yenile" göstergesi (sayfa kaymadan sadece yeniler) -->
+  <div class="ptr" id="ptr" role="status" aria-live="polite" aria-atomic="true">
+    <span class="ptr-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="16" height="16" focusable="false" aria-hidden="true">
+        <path d="M12 5a7 7 0 1 1-6.32 4H4l2.6-3.4L9.2 9H7.65A5.5 5.5 0 1 0 12 6.5V5z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="ptr-spinner" aria-hidden="true"></span>
+    <span class="ptr-text" id="ptrText">Yenilemek için aşağı çek</span>
+  </div>
+
   <header class="topbar">
     <a class="brand" href="./" aria-label="Ana sayfa">
       <img class="brand-logo" id="brandLogo" src="assets/logo.webp" alt="ŞERİF RESTORAN Logo">
@@ -31,8 +42,6 @@
       <div class="page-indicator" id="pageIndicator">1 / 2</div>
       <button class="btn" id="nextBtn" type="button" aria-label="Sonraki sayfa">›</button>
     </div>
-
-    <nav class="category-tabs" id="categoryTabs" aria-label="Kategoriler"></nav>
   </header>
 
   <main class="main">
@@ -42,7 +51,6 @@
 
     <p class="hint" id="hint">
       İpucu: Sayfayı çevirmek için üstteki okları kullanın.</p>
-
     <noscript>
       <div class="noscript">
         Bu menünün çalışması için JavaScript açık olmalı.
@@ -52,8 +60,9 @@
 
   <footer class="footer">
     <div class="contact-strip" role="navigation" aria-label="İletişim">
-      <a class="contact-action" href="tel:+905522820415" aria-label="Telefon ile ara">Telefon</a>
-      <a class="contact-action" href="https://instagram.com/hsyndmrts47" target="_blank" rel="noopener" aria-label="Instagram hesabına git">Instagram</a>
+      <a class="contact-action" href="tel:+905520085750" aria-label="Telefon ile ara">Telefon</a>
+      <a class="contact-action" href="https://instagram.com/serifrestoran" target="_blank" rel="noopener" aria-label="Instagram hesabına git">Instagram</a>
+      <a class="contact-action" href="https://www.google.com/maps/search/?api=1&query=Ba%C4%9Flar%20Mahallesi%20808.%20Sokak%20No%2024%20Mardin%2FMidyat" target="_blank" rel="noopener" aria-label="Adresi haritada aç">Adres</a>
       <a class="contact-action" href="mailto:sherifrestoran@gmail.com?subject=%C5%9Eerif%20Restoran%20-%20Bize%20Ula%C5%9F%C4%B1n&body=Merhaba%2C%20size%20sitenizden%20ula%C5%9F%C4%B1yorum." aria-label="E-posta gönder">Mail</a>
     </div>
   </footer>
