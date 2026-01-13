@@ -53,9 +53,7 @@
     const imageRaw = String(item.image || item.img || item.photo || "").trim();
     const imgUrl = imageRaw ? encodeURI(imageRaw).replaceAll("'", "%27") : "";
     const itemClass = imgUrl ? "menu-item has-image" : "menu-item";
-    const imgTag = imgUrl
-      ? `<img class="item-bg" src="${esc(imgUrl)}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.style.display='none';">`
-      : "";
+    const styleAttr = imgUrl ? ` style="--item-bg: url('${esc(imgUrl)}')"` : "";
 
     const tagsHTML = tags.length
       ? `<div class="item-tags">${tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>`
@@ -64,8 +62,7 @@
     const descHTML = desc ? `<div class="item-desc">${desc}</div>` : "";
 
     return `
-      <div class="${itemClass}">
-        ${imgTag}
+      <div class="${itemClass}"${styleAttr}>
         <div class="item-main">
           <div class="item-name">${name}</div>
           ${descHTML}
@@ -133,10 +130,12 @@
   }
 
   function setTopBrand(restaurant) {
-    if (restaurant.name) els.brandName.textContent = restaurant.name;
-    if (restaurant.tagline) els.brandTagline.textContent = restaurant.tagline;
+    // Bazı kurulumlarda header elemanları kaldırılmış olabilir.
+    // Null kontrolü yaparak TypeError'ları engelliyoruz.
+    if (restaurant.name && els.brandName) els.brandName.textContent = restaurant.name;
+    if (restaurant.tagline && els.brandTagline) els.brandTagline.textContent = restaurant.tagline;
 
-    if (restaurant.logoPath) {
+    if (restaurant.logoPath && els.brandLogo) {
       els.brandLogo.src = restaurant.logoPath;
     }
   }
@@ -184,14 +183,13 @@
 
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
     const pageFlip = new window.St.PageFlip(els.book, {
-      // Daha uzun sayfa oranı: menü alanı üst kategori barından footer'a kadar daha iyi dolar.
       width: 420,
-      height: 740,
+      height: 640,
       size: "stretch",
       minWidth: 280,
       maxWidth: 980,
-      minHeight: 520,
-      maxHeight: 1400,
+      minHeight: 420,
+      maxHeight: 1100,
       maxShadowOpacity: 0.35,
       showCover: false,
       mobileScrollSupport: false,
@@ -244,59 +242,7 @@
   // Sayfa içindeki dikey kaydırma (scroll) alanlarını koru:
   // Bazı cihazlarda dokunma hareketleri PageFlip tarafından "sayfa çevirme" gibi algılanabiliyor.
   // Biz oklarla çevirme kullandığımız için, içerik alanındaki dokunma/tekerlek olaylarını yukarı taşımıyoruz.
-  
-  // Kategori sekmeleri: pages dizisinden otomatik üretir, tıklayınca ilgili sayfaya gider.
-  function setupCategoryTabs(pages, pageFlip) {
-    const tabsEl = document.getElementById("categoryTabs");
-    if (!tabsEl || !Array.isArray(pages) || !pageFlip) return;
-
-    tabsEl.innerHTML = "";
-
-    pages.forEach((p, idx) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "category-tab";
-      btn.dataset.pageIndex = String(idx);
-      btn.textContent = (p && (p.navTitle || p.title)) ? String(p.navTitle || p.title) : `Sayfa ${idx + 1}`;
-      tabsEl.appendChild(btn);
-    });
-
-    function setActive(activeIdx) {
-      tabsEl.querySelectorAll(".category-tab").forEach((b) => {
-        const i = Number(b.dataset.pageIndex || -1);
-        b.classList.toggle("is-active", i === activeIdx);
-      });
-    }
-
-    // İlk durum
-    setActive(pageFlip.getCurrentPageIndex ? pageFlip.getCurrentPageIndex() : 0);
-
-    // Tıklayınca sayfaya git
-    tabsEl.addEventListener("click", (e) => {
-      const btn = e.target && e.target.closest ? e.target.closest(".category-tab") : null;
-      if (!btn) return;
-      const target = Number(btn.dataset.pageIndex);
-      if (!Number.isFinite(target)) return;
-
-      // Aynı sayfadaysa işlem yapma
-      const current = pageFlip.getCurrentPageIndex ? pageFlip.getCurrentPageIndex() : 0;
-      if (target === current) return;
-
-      try {
-        pageFlip.flip(target, "top");
-      } catch (_) {
-        // Bazı sürümlerde flip yerine turnToPage olabilir
-        if (typeof pageFlip.turnToPage === "function") pageFlip.turnToPage(target);
-      }
-    });
-
-    // Sayfa değişince aktif sekmeyi güncelle
-    if (typeof pageFlip.on === "function") {
-      pageFlip.on("flip", () => setActive(pageFlip.getCurrentPageIndex()));
-    }
-  }
-
-function protectScrollAreas() {
+  function protectScrollAreas() {
     const events = ["touchstart", "touchmove", "pointerdown", "pointermove", "wheel"];
     document.querySelectorAll(".page-content").forEach((el) => {
       events.forEach((evt) => {
@@ -336,116 +282,7 @@ function protectScrollAreas() {
     );
   }
 
-  
-
-  // Mobilde "aşağı çek-yenile" (pull to refresh) benzeri davranış:
-  // - Sayfanın kendisi kaymasın diye body overflow kapalı
-  // - Kullanıcı üstten aşağı doğru çekerse (ve menü listesi en üstteyse) sayfayı yeniler
-  function enablePullToRefresh() {
-    const ptr = document.getElementById("ptr");
-    const ptrText = document.getElementById("ptrText");
-
-    const THRESHOLD = 78; // px
-    const START_ZONE = 120; // px (ekranın üst kısmı)
-
-    let startY = 0;
-    let triggered = false;
-    let ready = false;
-    let activeScroller = null;
-
-    function setPtrState(state) {
-      if (!ptr) return;
-      ptr.classList.remove("show", "ready", "loading");
-      if (state === "show") ptr.classList.add("show");
-      if (state === "ready") ptr.classList.add("show", "ready");
-      if (state === "loading") ptr.classList.add("show", "loading");
-    }
-
-    function setPtrText(text) {
-      if (ptrText) ptrText.textContent = text;
-    }
-
-    document.addEventListener("touchstart", (e) => {
-      const t = e.touches && e.touches[0];
-      if (!t) return;
-
-      activeScroller = e.target && e.target.closest ? e.target.closest(".page-content") : null;
-
-      // Dokunuş menü içinde ve scrollTop>0 ise kullanıcı menüyü kaydırıyordur; pull-to-refresh başlatma.
-      if (activeScroller && activeScroller.scrollTop > 0) {
-        startY = 0;
-        triggered = false;
-        ready = false;
-        setPtrState("hide");
-        return;
-      }
-
-      // Sadece sayfanın tepesine yakın başlarsa (kazara tetiklemeyi azaltır)
-      if (t.clientY < START_ZONE) {
-        startY = t.clientY;
-        triggered = false;
-        ready = false;
-        setPtrText("Yenilemek için aşağı çek");
-        setPtrState("hide");
-      } else {
-        startY = 0;
-        triggered = false;
-        ready = false;
-        setPtrState("hide");
-      }
-    }, { passive: true, capture: true });
-
-    document.addEventListener("touchmove", (e) => {
-      if (!startY || triggered) return;
-      const t = e.touches && e.touches[0];
-      if (!t) return;
-
-      const dy = t.clientY - startY;
-      if (dy <= 12) {
-        setPtrState("hide");
-        return;
-      }
-
-      // Pull hareketi sırasında sayfanın (body) "lastik" kaymasını engelle
-      // (menü içindeyse ve en üstteyse de engeller, böylece sadece ikon görünür)
-      if (activeScroller && activeScroller.scrollTop === 0) {
-        try { e.preventDefault(); } catch (_) {}
-      }
-
-      // Menünün içinde ve scrollTop>0 ise asla tetikleme
-      const scroller = e.target && e.target.closest ? e.target.closest(".page-content") : null;
-      if (scroller && scroller.scrollTop > 0) return;
-
-      if (dy >= THRESHOLD) {
-        ready = true;
-        setPtrText("Bırakınca yenilenecek");
-        setPtrState("ready");
-      } else {
-        ready = false;
-        setPtrText("Yenilemek için aşağı çek");
-        setPtrState("show");
-      }
-    }, { passive: false, capture: true });
-
-    document.addEventListener("touchend", () => {
-      if (startY && ready && !triggered) {
-        triggered = true;
-        setPtrText("Yenileniyor…");
-        setPtrState("loading");
-        setTimeout(() => location.reload(), 120);
-      } else {
-        setPtrState("hide");
-      }
-
-      // Reset
-      startY = 0;
-      triggered = false;
-      ready = false;
-      activeScroller = null;
-    }, { passive: true, capture: true });
-  }
-
-async function main() {
+  async function main() {
     try {
       const data = await loadMenu();
       const restaurant = data.restaurant || {};
@@ -466,14 +303,11 @@ async function main() {
         els.book.appendChild(pageEl);
       });
 
-      const pageFlip = initPageFlip(pages.length);
-      setupCategoryTabs(pages, pageFlip);
+      initPageFlip(pages.length);
       protectScrollAreas();
       preventBodyScroll();
-      enablePullToRefresh();
 
-
-      // (İpucu metni kaldırıldı)
+      // İpucu metni kaldırıldı (kullanıcı isteği)
     } catch (err) {
       showError(err?.message || "Beklenmeyen bir hata oluştu.");
     }
