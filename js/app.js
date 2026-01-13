@@ -213,7 +213,7 @@
       height: calcFlipHeight(),
       size: "stretch",
       minWidth: 280,
-      maxWidth: 1120,
+      maxWidth: 980,
       minHeight: 420,
       maxHeight: 1100,
       maxShadowOpacity: 0.35,
@@ -262,6 +262,41 @@
     pageFlip.on("changeOrientation", updateIndicator);
 
     return pageFlip;
+  }
+
+  // Kategori sekmelerinin (örn. "Yiyecekler") sol hizası ile
+  // PageFlip'in ürettiği sayfanın sol hizasını aynı yapar.
+  // Böylece mobilde menü sayfası sağda kalmaz; kategori butonuyla aynı hizada başlar.
+  function alignBookToCategoryTabs() {
+    const tabsEl = document.getElementById("categoryTabs");
+    const firstTab = tabsEl ? tabsEl.querySelector(".category-tab") : null;
+    const wrap = document.querySelector(".book-wrap");
+    // PageFlip, sayfaları .stf__item olarak üretir (bizim .page class'ımız da korunur)
+    const stPage = els.book ? els.book.querySelector(".stf__item") : null;
+
+    if (!firstTab || !wrap || !stPage) return;
+
+    const tabLeft = firstTab.getBoundingClientRect().left;
+    const pageLeft = stPage.getBoundingClientRect().left;
+    const delta = pageLeft - tabLeft;
+
+    // Zaten hizalıysa temizle
+    if (Math.abs(delta) < 0.75) {
+      wrap.style.transform = "";
+      return;
+    }
+
+    // Sayfa soldan daha içerideyse (pageLeft > tabLeft) sola kaydır.
+    // Tersi durumda (çok sola kaçtıysa) sağa kaydır.
+    let shift = -delta;
+
+    // Viewport dışına taşmayı önlemek için clamp
+    const rect = wrap.getBoundingClientRect();
+    const vw = window.innerWidth || document.documentElement.clientWidth || 360;
+    if (rect.left + shift < 0) shift = -rect.left;
+    if (rect.right + shift > vw) shift -= (rect.right + shift - vw);
+
+    wrap.style.transform = `translateX(${shift.toFixed(2)}px)`;
   }
 
 
@@ -316,7 +351,12 @@
 
     // Sayfa değişince aktif sekmeyi güncelle
     if (typeof pageFlip.on === "function") {
-      pageFlip.on("flip", () => setActive(pageFlip.getCurrentPageIndex()));
+      pageFlip.on("flip", () => {
+        setActive(pageFlip.getCurrentPageIndex());
+        // Flip sonrası PageFlip inline konumları yeniden hesaplıyor.
+        // Kategori hizasını korumak için tekrar hizala.
+        setTimeout(alignBookToCategoryTabs, 0);
+      });
     }
   }
 
@@ -495,6 +535,16 @@ async function main() {
       protectScrollAreas();
       preventBodyScroll();
       enablePullToRefresh();
+
+      // İlk render sonrası hizalamayı uygula (PageFlip DOM'u ve inline left değerleri otursun)
+      setTimeout(alignBookToCategoryTabs, 0);
+
+      // Ekran boyutu/orient değişimlerinde yeniden hizala
+      let _alignTO;
+      window.addEventListener("resize", () => {
+        clearTimeout(_alignTO);
+        _alignTO = setTimeout(alignBookToCategoryTabs, 60);
+      });
 
 
       // İpucu: sayfa çoksa, metni kısalt (görsel kalabalık olmasın)
