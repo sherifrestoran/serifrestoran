@@ -612,3 +612,41 @@ body{
     padding: 10px 10px;
   }
 }
+
+
+/* Kategori sekmeleri (header altı) */
+.category-tabs{
+  position: relative;
+  z-index: 999998;
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px 12px;
+  background: linear-gradient(180deg, rgba(18,8,5,.62), rgba(18,8,5,.35));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.category-tabs::-webkit-scrollbar{ height: 0; }
+
+.category-tab{
+  appearance: none;
+  border: 1px solid rgba(216,177,90,.25);
+  background: rgba(0,0,0,.18);
+  color: rgba(255,255,255,.90);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
+}
+.category-tab:active{ transform: scale(.98); }
+.category-tab:hover{ background: rgba(0,0,0,.26); border-color: rgba(216,177,90,.40); }
+
+.category-tab.is-active{
+  background: rgba(216,177,90,.18);
+  border-color: rgba(216,177,90,.70);
+  color: rgba(255,255,255,.98);
+  box-shadow: 0 6px 18px rgba(0,0,0,.22);
+}

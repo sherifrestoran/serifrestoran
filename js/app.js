@@ -244,7 +244,59 @@
   // Sayfa içindeki dikey kaydırma (scroll) alanlarını koru:
   // Bazı cihazlarda dokunma hareketleri PageFlip tarafından "sayfa çevirme" gibi algılanabiliyor.
   // Biz oklarla çevirme kullandığımız için, içerik alanındaki dokunma/tekerlek olaylarını yukarı taşımıyoruz.
-  function protectScrollAreas() {
+  
+  // Kategori sekmeleri: pages dizisinden otomatik üretir, tıklayınca ilgili sayfaya gider.
+  function setupCategoryTabs(pages, pageFlip) {
+    const tabsEl = document.getElementById("categoryTabs");
+    if (!tabsEl || !Array.isArray(pages) || !pageFlip) return;
+
+    tabsEl.innerHTML = "";
+
+    pages.forEach((p, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "category-tab";
+      btn.dataset.pageIndex = String(idx);
+      btn.textContent = (p && (p.navTitle || p.title)) ? String(p.navTitle || p.title) : `Sayfa ${idx + 1}`;
+      tabsEl.appendChild(btn);
+    });
+
+    function setActive(activeIdx) {
+      tabsEl.querySelectorAll(".category-tab").forEach((b) => {
+        const i = Number(b.dataset.pageIndex || -1);
+        b.classList.toggle("is-active", i === activeIdx);
+      });
+    }
+
+    // İlk durum
+    setActive(pageFlip.getCurrentPageIndex ? pageFlip.getCurrentPageIndex() : 0);
+
+    // Tıklayınca sayfaya git
+    tabsEl.addEventListener("click", (e) => {
+      const btn = e.target && e.target.closest ? e.target.closest(".category-tab") : null;
+      if (!btn) return;
+      const target = Number(btn.dataset.pageIndex);
+      if (!Number.isFinite(target)) return;
+
+      // Aynı sayfadaysa işlem yapma
+      const current = pageFlip.getCurrentPageIndex ? pageFlip.getCurrentPageIndex() : 0;
+      if (target === current) return;
+
+      try {
+        pageFlip.flip(target, "top");
+      } catch (_) {
+        // Bazı sürümlerde flip yerine turnToPage olabilir
+        if (typeof pageFlip.turnToPage === "function") pageFlip.turnToPage(target);
+      }
+    });
+
+    // Sayfa değişince aktif sekmeyi güncelle
+    if (typeof pageFlip.on === "function") {
+      pageFlip.on("flip", () => setActive(pageFlip.getCurrentPageIndex()));
+    }
+  }
+
+function protectScrollAreas() {
     const events = ["touchstart", "touchmove", "pointerdown", "pointermove", "wheel"];
     document.querySelectorAll(".page-content").forEach((el) => {
       events.forEach((evt) => {
@@ -414,7 +466,8 @@ async function main() {
         els.book.appendChild(pageEl);
       });
 
-      initPageFlip(pages.length);
+      const pageFlip = initPageFlip(pages.length);
+      setupCategoryTabs(pages, pageFlip);
       protectScrollAreas();
       preventBodyScroll();
       enablePullToRefresh();
