@@ -200,7 +200,9 @@ body{
   flex: 1;
   min-height: 0;
   overflow: hidden; /* Body değil, sadece menü alanı kaymalı */
-  padding: 14px 12px 0;
+  /* Menü (kitap) üstteki kategori barına kadar uzasın.
+     Genişlik aynı kalsın; yalnızca üst boşluğu kaldırıyoruz. */
+  padding: 0 12px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,7 +215,8 @@ body{
   min-height: 0;
   display: grid;
   place-items: center;
-  margin-top: 6px;
+  /* Kategori barı ile menü arasında boşluk olmasın */
+  margin-top: 0;
 }
 
 .book{
