@@ -213,11 +213,17 @@ body{
   width: min(1120px, 100%);
   flex: 1;
   min-height: 0;
-  display: grid;
-  place-items: center;
+
+  /* ÖNEMLİ: Menü (PageFlip) bazı ekranlarda ortalanıp sola boşluk bırakabiliyor.
+     Kullanıcının istediği: Menü sol kenarı kategori butonlarının başladığı hizadan başlasın. */
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+
   /* Kategori barı ile menü arasında boşluk olmasın */
   margin-top: 0;
 }
+
 
 .book{
   width: 100%;
@@ -226,6 +232,13 @@ body{
   position: relative;
   z-index: 1;
 }
+/* StPageFlip iç sarmalayıcılarını sola hizala (mobilde menü solda kalsın) */
+.book .stf__parent,
+.book .stf__wrapper{
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
 
 /* StPageFlip default page class: .stf__item  (biz içeride .page kullanıyoruz) */
 .page{
