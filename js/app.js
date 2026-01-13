@@ -213,7 +213,7 @@
       height: calcFlipHeight(),
       size: "stretch",
       minWidth: 280,
-      maxWidth: 980,
+      maxWidth: 1120,
       minHeight: 420,
       maxHeight: 1100,
       maxShadowOpacity: 0.35,
