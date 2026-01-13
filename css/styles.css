@@ -695,9 +695,10 @@ a:focus, a:focus-visible,
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background: rgba(0,0,0,.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  /* Arka planı çok fazla bulanıklaştırmadan odak hissi ver */
+  background: rgba(0,0,0,.42);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 .confirm-overlay[hidden]{ display:none; }
 
@@ -744,18 +745,25 @@ a:focus, a:focus-visible,
 .confirm-btn:active{ transform: scale(.98); }
 
 .confirm-yes{
-  background: rgba(179,38,23,.10);
-  border-color: rgba(179,38,23,.28);
+  /* EVET = yeşil */
+  background: rgba(16, 120, 70, .14);
+  border-color: rgba(16, 120, 70, .38);
   color: rgba(35,35,35,.95);
 }
 .confirm-yes:hover{
-  background: rgba(179,38,23,.14);
-  border-color: rgba(179,38,23,.40);
+  background: rgba(16, 120, 70, .18);
+  border-color: rgba(16, 120, 70, .52);
 }
 
 .confirm-no{
-  background: rgba(0,0,0,.05);
-  border-color: rgba(0,0,0,.14);
+  /* HAYIR = kırmızı */
+  background: rgba(179,38,23,.14);
+  border-color: rgba(179,38,23,.38);
+  color: rgba(35,35,35,.95);
+}
+.confirm-no:hover{
+  background: rgba(179,38,23,.18);
+  border-color: rgba(179,38,23,.52);
 }
 
 @media (prefers-reduced-motion: reduce){

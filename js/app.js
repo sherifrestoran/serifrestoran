@@ -479,10 +479,11 @@ function protectScrollAreas() {
   // İletişim butonlarında (Telefon/Instagram/Adres/Mail) onay kutusu
   function setupContactConfirm() {
     const overlay = document.getElementById("confirmOverlay");
+    const titleEl = document.getElementById("confirmTitle");
     const msgEl = document.getElementById("confirmMessage");
     const btnNo = document.getElementById("confirmNo");
     const btnYes = document.getElementById("confirmYes");
-    if (!overlay || !msgEl || !btnNo || !btnYes) return;
+    if (!overlay || !msgEl || !btnNo || !btnYes || !titleEl) return;
 
     const getMessageForHref = (href) => {
       if (!href) return "Devam etmek ister misin?";
@@ -494,9 +495,20 @@ function protectScrollAreas() {
       return "Devam etmek ister misin?";
     };
 
+    const getTitleForHref = (href) => {
+      if (!href) return "Bilgilendirme";
+      const h = href.toLowerCase();
+      if (h.startsWith("tel:")) return "Telefonla Aramak Üzeresiniz";
+      if (h.includes("instagram.com")) return "İnstagram'a Yönlendirileceksiniz";
+      if (h.includes("google.com/maps") || h.includes("maps.google") || h.includes("/maps")) return "Adresi Görmek Üzeresiniz";
+      if (h.startsWith("mailto:")) return "Mail Atmak Üzeresiniz";
+      return "Bilgilendirme";
+    };
+
     let pendingAction = null;
 
-    const open = (message, actionFn) => {
+    const open = (title, message, actionFn) => {
+      titleEl.textContent = title || "Bilgilendirme";
       msgEl.textContent = message || "Devam etmek ister misin?";
       pendingAction = typeof actionFn === "function" ? actionFn : null;
       overlay.hidden = false;
@@ -539,8 +551,9 @@ function protectScrollAreas() {
         e.stopPropagation();
 
         const message = getMessageForHref(href);
+        const title = getTitleForHref(href);
 
-        open(message, () => {
+        open(title, message, () => {
           if (target === "_blank") {
             // noopener güvenliği
             window.open(href, "_blank", rel.includes("noopener") ? "noopener" : "noopener");
