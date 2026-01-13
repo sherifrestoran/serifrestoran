@@ -769,29 +769,3 @@ a:focus, a:focus-visible,
 @media (prefers-reduced-motion: reduce){
   .confirm-btn{ transition: none; }
 }
-
-
-/* =========================================================
-   Masaüstü düzeni (mobil bozulmasın diye sadece geniş ekran)
-   - Tek sayfa görünüm, daha geniş "panoramik" sayfa
-   - Ürünler 3'lü grid
-   ========================================================= */
-@media (min-width: 1100px){
-  /* Kitap alanı 3 sayfa genişliğine izin versin ve ortalansın */
-  .book-wrap{ width: min(1400px, 100%); }
-
-  /* Her alt kategori içinde ürünler 3'lü satırlar */
-  .menu-list{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  /* 3'lü düzende kartlar biraz daha kompakt */
-  .menu-item{
-    min-height: 112px;
-    padding: 16px 16px;
-  }
-  .item-name{ font-size: 13px; }
-  .item-desc{ font-size: 11px; }
-  .item-price{ font-size: 14px; }
-}
