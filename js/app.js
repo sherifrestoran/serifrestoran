@@ -21,6 +21,12 @@
 
   // Menü alanının yüksekliğine göre PageFlip sayfa yüksekliğini dinamik hesapla
   // Amaç: Genişliği bozmadan, sayfanın yüksekliği kategori barından footer'a kadar alanı doldursun.
+  function calcFlipWidth(){
+    const w = els.book.clientWidth || 420;
+    // Kategori sekmeleri ile aynı sol hizadan başlamak için: book-wrap padding'i düşülmüş net genişlik
+    return Math.max(280, Math.min(1120, Math.floor(w)));
+  }
+
   function calcFlipHeight() {
     const wrap = document.querySelector(".book-wrap");
     if (!wrap) return 640;
@@ -209,9 +215,9 @@
 
     // Not: width/height base ölçülerdir. size:'stretch' ile ekrana uyarlanır.
     const pageFlip = new window.St.PageFlip(els.book, {
-      width: 420,
+      width: calcFlipWidth(),
       height: calcFlipHeight(),
-      size: "stretch",
+      size: "fixed",
       minWidth: 280,
       maxWidth: 1120,
       minHeight: 420,

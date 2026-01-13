@@ -5,6 +5,7 @@
    ========================================================= */
 
 :root{
+  --frame-pad: 14px; /* kategori ve menü hizası */
   /* Marka renkleri (logoya uyumlu) */
   --bg1: #2b120b;
   --bg2: #140805;
@@ -199,6 +200,7 @@ body{
 .main{
   flex: 1;
   min-height: 0;
+  padding: 0 var(--frame-pad);
   overflow: hidden; /* Body değil, sadece menü alanı kaymalı */
   /* Menü (kitap) üstteki kategori barına kadar uzasın.
      Genişlik aynı kalsın; yalnızca üst boşluğu kaldırıyoruz. */
@@ -213,6 +215,7 @@ body{
   width: min(1120px, 100%);
   flex: 1;
   min-height: 0;
+  padding: 0 var(--frame-pad);
 
   /* ÖNEMLİ: Menü (PageFlip) bazı ekranlarda ortalanıp sola boşluk bırakabiliyor.
      Kullanıcının istediği: Menü sol kenarı kategori butonlarının başladığı hizadan başlasın. */
@@ -642,7 +645,7 @@ body{
   margin: 0 auto;
   display: flex;
   gap: 10px;
-  padding: 8px 14px 10px; /* biraz daha kısa */
+  padding: 8px var(--frame-pad) 10px; /* biraz daha kısa */
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
