@@ -202,28 +202,25 @@ body{
   overflow: hidden; /* Body değil, sadece menü alanı kaymalı */
   /* Menü (kitap) üstteki kategori barına kadar uzasın.
      Genişlik aynı kalsın; yalnızca üst boşluğu kaldırıyoruz. */
-  padding: 0 6px 0 14px;
+  padding: 0 12px 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
 }
 
 .book-wrap{
-  width: min(1120px, 100%);
+  width: min(980px, 100%);
   flex: 1;
   min-height: 0;
-
-  /* ÖNEMLİ: Menü (PageFlip) bazı ekranlarda ortalanıp sola boşluk bırakabiliyor.
-     Kullanıcının istediği: Menü sol kenarı kategori butonlarının başladığı hizadan başlasın. */
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-
+  display: grid;
+  place-items: center;
   /* Kategori barı ile menü arasında boşluk olmasın */
   margin-top: 0;
+  /* Sekme başlangıcı ile menü başlangıcını hizalamak için küçük kaydırma
+     (JS, --bookShift CSS değişkenini ayarlar). */
+  transform: translateX(var(--bookShift, 0px));
 }
-
 
 .book{
   width: 100%;
@@ -232,13 +229,6 @@ body{
   position: relative;
   z-index: 1;
 }
-/* StPageFlip iç sarmalayıcılarını sola hizala (mobilde menü solda kalsın) */
-.book .stf__parent,
-.book .stf__wrapper{
-  margin-left: 0 !important;
-  margin-right: auto !important;
-}
-
 
 /* StPageFlip default page class: .stf__item  (biz içeride .page kullanıyoruz) */
 .page{
@@ -634,15 +624,11 @@ body{
 .category-tabs{
   position: relative;
   z-index: 999998;
-  background: linear-gradient(180deg, rgba(18,8,5,.62), rgba(18,8,5,.35));
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-.category-tabs-inner{
-  width: min(1120px, 100%);
-  margin: 0 auto;
   display: flex;
   gap: 10px;
-  padding: 8px 14px 10px; /* biraz daha kısa */
+  padding: 10px 14px 12px;
+  background: linear-gradient(180deg, rgba(18,8,5,.62), rgba(18,8,5,.35));
+  border-bottom: 1px solid rgba(255,255,255,.08);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
