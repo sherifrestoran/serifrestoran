@@ -42,6 +42,23 @@ body{
   touch-action: none;
 }
 
+
+/* ---------------------------------------------------------
+   Dokunma/focus mavi çerçeveyi kaldır (tüm buton/linkler)
+   Not: kategori/iletişim animasyonları korunur
+--------------------------------------------------------- */
+button, a, .btn, .category-tab, .contact-action{
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+button:focus, button:focus-visible,
+a:focus, a:focus-visible,
+.btn:focus, .btn:focus-visible,
+.category-tab:focus, .category-tab:focus-visible,
+.contact-action:focus, .contact-action:focus-visible{
+  outline: none !important;
+}
 /* =========================================================
    Pull-to-refresh göstergesi (mobil)
    ---------------------------------------------------------
@@ -607,7 +624,7 @@ body{
 }
 
 .contact-action:active{
-  transform: translateY(0px);
+  transform: scale(.98);
 }
 
 @media (max-width: 520px){
