@@ -43,7 +43,7 @@
               "name": "TAVUK KANAT PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
               "price": "180",
-              "image": "assets/items/tavuk_porsiyon.webp"
+              "image": "assets/items/tavuk_kanat_porsiyon.webp"
             },
             {
               "name": "ADANA KEBAP PORSİYON",
@@ -99,28 +99,28 @@
           "items": [
             {
               "name": "Su (0.5L)",
-              "price": "35",
+              "price": "10",
               "image": "assets/items/su.webp"
             },
             {
               "name": "Büyük Ayran (330ml)",
-              "price": "55",
+              "price": "30",
               "image": "assets/items/buyuk_ayran.webp"
             },
             {
               "name": "Küçük Ayran (250ml)",
-              "price": "55",
+              "price": "20",
               "image": "assets/items/kucuk_ayran.webp"
             },
             {
               "name": "Kutu İçecek (330ml)",
-              "price": "70",
+              "price": "50",
               "image": "assets/items/kutu_icecek.webp"
             },
             {
-              "name": "Şişe İçecek (200ml)",
+              "name": "1 Litre Kola",
               "price": "70",
-              "image": "assets/items/sise_icecek.webp"
+              "image": "assets/items/litre_icecek.webp"
             }
           ]
         },
@@ -129,7 +129,7 @@
           "items": [
             {
               "name": "Çay",
-              "price": "40",
+              "price": "-",
               "image": "assets/items/cay.webp"
             }
           ]
