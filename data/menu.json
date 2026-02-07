@@ -50,12 +50,6 @@
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
               "price": "250",
               "image": "assets/items/adana_porsiyon.webp"
-            },
-    	    {
-              "name": "Karışık Izgara",
-              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "300",
-              "image": "assets/items/adana_porsiyon.webp"
             }
           ]
         },
