@@ -122,9 +122,9 @@
           "name": "Sıcak İçecekler",
           "items": [
             {
-              "name": "Çay",
+              "name": "Çok Yakında",
               "price": "-",
-              "image": "assets/items/cay.webp"
+              "image": "assets/items/masa.webp"
             }
           ]
         }
