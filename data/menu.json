@@ -93,7 +93,7 @@
           "items": [
             {
               "name": "Su (0.5L)",
-              "price": "10",
+              "price": "15",
               "image": "assets/items/su.webp"
             },
             {
@@ -113,7 +113,7 @@
             },
             {
               "name": "1 Litre Kola",
-              "price": "70",
+              "price": "80",
               "image": "assets/items/litre_icecek.webp"
             }
           ]
