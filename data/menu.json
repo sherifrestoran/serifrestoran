@@ -18,13 +18,13 @@
           "items": [
             {
               "name": "TAVUK ŞİŞ DÜRÜM",
-              "description": "Mevsim Salata, Domates, Izgara Biber",
+              "description": "Mevsim Salata, Domates",
               "price": "100",
               "image": "assets/items/tavuk_durum.webp"
             },
             {
               "name": "ADANA KEBAP DÜRÜM",
-              "description": "Soğan Salatası, Domates, Izgara Biber",
+              "description": "Soğan Salatası, Domates",
               "price": "130",
               "image": "assets/items/adana_durum.webp?v=2"
             }
