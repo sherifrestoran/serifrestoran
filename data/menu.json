@@ -112,6 +112,11 @@
               "image": "assets/items/kutu_icecek.webp"
             },
             {
+              "name": "Şalgam (300ml)",
+              "price": "40",
+              "image": "assets/items/kucuk_salgam.webp"
+            },
+            {
               "name": "1 Litre Kola",
               "price": "80",
               "image": "assets/items/litre_icecek.webp"
