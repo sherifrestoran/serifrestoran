@@ -3,7 +3,7 @@
     "name": "ŞERİF ET & IZGARA",
     "tagline": "Dijital Menü",
     "currency": "₺",
-    "lastUpdated": "24.03.2026",
+    "lastUpdated": "25.03.2026",
     "logoPath": "assets/logo.webp",
     "footerNote": "Afiyet Olsun."
   },
@@ -52,7 +52,7 @@
               "image": "assets/items/adana_porsiyon.webp"
             },
             {
-              "name": "KARIŞIK KEBAP Porsiyon (1 Şiş Adana Kebap, 1 Tavuk Şiş, Yarım Şiş Tavuk Kanat)",
+              "name": "KARIŞIK KEBAP Porsiyon (1 Şiş Adana Kebap, 1 Tavuk Şiş, 4 Adet Tavuk Kanat)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
               "price": "350",
               "image": "assets/items/karisik_kebap.webp"
