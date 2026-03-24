@@ -52,10 +52,10 @@
               "image": "assets/items/adana_porsiyon.webp"
             },
             {
-              "name": "KARIŞIK KEBAP PORSİYON (1 Porsiyon Adana Kebap, 1 Porsiyon Tavuk Şiş, Yarım Porsiyon Tavuk Kanat)",
+              "name": "KARIŞIK KEBAP (1 Porsiyon Adana Kebap, 1 Porsiyon Tavuk Şiş, Yarım Porsiyon Tavuk Kanat)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
               "price": "300",
-              "image": "assets/items/adana_porsiyon.webp"
+              "image": "assets/items/karisik_kebap.webp"
             }
           ]
         },
