@@ -3,7 +3,7 @@
     "name": "ŞERİF ET & IZGARA",
     "tagline": "Dijital Menü",
     "currency": "₺",
-    "lastUpdated": "21.02.2026",
+    "lastUpdated": "24.03.2026",
     "logoPath": "assets/logo.webp",
     "footerNote": "Afiyet Olsun."
   },
@@ -36,19 +36,25 @@
             {
               "name": "TAVUK ŞİŞ PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "200",
+              "price": "240",
               "image": "assets/items/tavuk_porsiyon.webp"
             },
  	    {
               "name": "TAVUK KANAT PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "200",
+              "price": "250",
               "image": "assets/items/tavuk_kanat_porsiyon.webp"
             },
             {
               "name": "ADANA KEBAP PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "280",
+              "price": "300",
+              "image": "assets/items/adana_porsiyon.webp"
+            },
+            {
+              "name": "KARIŞIK KEBAP PORSİYON (1 Porsiyon Adana Kebap, 1 Porsiyon Tavuk Şiş, Yarım Porsiyon Tavuk Kanat)",
+              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
+              "price": "300",
               "image": "assets/items/adana_porsiyon.webp"
             }
           ]
@@ -59,19 +65,19 @@
             {
               "name": "KARIŞIK TAVUK IZGARA (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "320",
+              "price": "350",
               "image": "assets/items/karisik_tavuk_izgara.webp"
             },
             {
               "name": "TAVUK KANAT (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "400",
+              "price": "450",
               "image": "assets/items/karisik_tavuk_izgara.webp"
             },
             {
               "name": "TAVUK ŞİŞ (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "500",
+              "price": "420",
               "image": "assets/items/tavuk_sis_kilo.webp"
             }
           ]
@@ -119,7 +125,7 @@
             },
             {
               "name": "Şalgam (300ml)",
-              "price": "40",
+              "price": "50",
               "image": "assets/items/kucuk_salgam.webp"
             },
             {
