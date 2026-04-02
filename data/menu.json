@@ -156,13 +156,13 @@
           "name": "",
           "items": [
             {
-              "name": "Tavuk Şiş Dürüm + Ayran",
+              "name": "Tavuk Şiş Dürüm + Küçük Ayran",
               "description": "Sadece Öğrenci ve İş Yerlerine",
               "price": "120",
               "image": "assets/items/kampanya_1.webp"
             },
             {
-              "name": "Urfa Dürüm + Ayran",
+              "name": "Adana Dürüm + Küçük Ayran",
               "description": "Sadece Öğrenci ve İş Yerlerine",
               "price": "150",
               "image": "assets/items/kampanya_2.webp"
