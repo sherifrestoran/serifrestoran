@@ -19,13 +19,13 @@
             {
               "name": "TAVUK ŞİŞ DÜRÜM",
               "description": "Mevsim Salata, Domates",
-              "price": "120",
+              "price": "140",
               "image": "assets/items/tavuk_durum.webp"
             },
             {
               "name": "ADANA KEBAP DÜRÜM",
               "description": "Soğan Salatası, Domates",
-              "price": "150",
+              "price": "170",
               "image": "assets/items/adana_durum.webp?v=2"
             }
           ]
@@ -36,25 +36,25 @@
             {
               "name": "TAVUK ŞİŞ PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "240",
+              "price": "300",
               "image": "assets/items/tavuk_porsiyon.webp"
             },
  	    {
               "name": "TAVUK KANAT PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "250",
+              "price": "320",
               "image": "assets/items/tavuk_kanat_porsiyon.webp"
             },
             {
               "name": "ADANA KEBAP PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "300",
+              "price": "360",
               "image": "assets/items/adana_porsiyon.webp"
             },
             {
-              "name": "KARIŞIK KEBAP Porsiyon (1 Şiş Adana Kebap, 1 Tavuk Şiş, 4 Adet Tavuk Kanat)",
+              "name": "ŞERİF KARIŞIK (1 Şiş Adana Kebap, 1 Tavuk Şiş, 4 Adet Tavuk Kanat)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "350",
+              "price": "420",
               "image": "assets/items/karisik_kebap.webp"
             }
           ]
@@ -63,22 +63,22 @@
           "name": "Izgaralar",
           "items": [
             {
-              "name": "KARIŞIK TAVUK IZGARA (1 Kg.)",
-              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "350",
-              "image": "assets/items/karisik_tavuk_izgara.webp"
-            },
-            {
               "name": "TAVUK KANAT (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "450",
+              "price": "500",
               "image": "assets/items/karisik_tavuk_izgara.webp"
             },
             {
               "name": "TAVUK ŞİŞ (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
-              "price": "420",
+              "price": "470",
               "image": "assets/items/tavuk_sis_kilo.webp"
+            }
+            {
+              "name": "ADANA KEBAP (1 Kg.)",
+              "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
+              "price": "1600",
+              "image": "assets/items/adana_kebap_kilo.webp"
             }
           ]
         },
@@ -88,7 +88,7 @@
             {
               "name": "1 KG ET PİŞİRİM",
               "description": "Sadece pişirim ücreti.",
-              "price": "70",
+              "price": "80",
               "image": "assets/items/et_pisirim.webp"
             }
           ]
