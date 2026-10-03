@@ -39,7 +39,7 @@
               "price": "300",
               "image": "assets/items/tavuk_porsiyon.webp"
             },
- 	    {
+            {
               "name": "TAVUK KANAT PORSİYON",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
               "price": "320",
@@ -73,7 +73,7 @@
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
               "price": "470",
               "image": "assets/items/tavuk_sis_kilo.webp"
-            }
+            },
             {
               "name": "ADANA KEBAP (1 Kg.)",
               "description": "Mevsim Salata, Acılı Ezme eşliğinde.",
